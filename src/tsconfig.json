@@ -1,0 +1,22 @@
+{
+  "extends": "ts-node/node16/tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "alwaysStrict": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noErrorTruncation": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {
+      "ui/*": ["./*"]
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+  },
+  "include": ["**/*", "**/.*"],
+}

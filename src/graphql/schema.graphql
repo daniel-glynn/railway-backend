@@ -1,0 +1,118 @@
+type User {
+  avatar: String!
+  email: String!
+  name: String!
+  projects: Projects
+}
+
+type Project {
+  id: ID!
+  name: String!
+  description: String!
+  updatedAt: DateTime!
+  services: Services
+  plugins: Plugins
+  environments: Environments
+}
+
+type Deployment {
+  id: ID!
+  canRedeploy: Boolean!
+  canRollback: Boolean!
+  deploymentStopped: Boolean!
+  environmentId: String!
+  projectId: String!
+  status: DeploymentStatus
+  url: String!
+  staticUrl: String!
+}
+
+enum DeploymentStatus {
+  BUILDING
+  CRASHED
+  DEPLOYING
+  FAILED
+  INITIALIZING
+  NEEDS_APPROVAL
+  QUEUED
+  REMOVED
+  REMOVING
+  SKIPPED
+  SLEEPING
+  SUCCESS
+  WAITING
+}
+
+type Projects {
+  edges: [ProjectEdge]
+  pageInfo: PageInfo!
+}
+
+type Services {
+  edges: [ServiceEdge]
+  pageInfo: PageInfo!
+}
+
+type Plugins {
+  edges: [PluginEdge]
+  pageInfo: PageInfo!
+}
+
+type Environments {
+  edges: [EnvironmentEdge]
+  pageInfo: PageInfo!
+}
+
+type ProjectEdge {
+  cursor: String!
+  node: Project
+}
+
+type PluginEdge {
+  node: Plugin
+}
+
+type EnvironmentEdge {
+  node: Environment
+}
+
+type ServiceEdge {
+  node: Service
+}
+
+type Plugin {
+  id: String
+  name: String
+}
+
+type Environment {
+  id: String
+  name: String
+}
+
+type Service {
+  id: String
+  name: String
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+scalar DateTime
+scalar URL
+scalar JSON
+
+type Query {
+  activeDeployment(projectId: String, environmentId: String, serviceId: String): Deployment
+  user: User
+}
+
+type Mutation {
+  createService(projectId: String, repo: String): Service
+  deleteProject(projectId: String): Boolean
+  restartDeployment(deploymentId: String): Boolean
+}
