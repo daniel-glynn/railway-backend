@@ -14,6 +14,7 @@ import { Context } from './graphql/context'
 import {graphqlClient} from './services/graphql-client'
 import { logger } from './util/logger';
 import {resolvers} from './graphql/schema';
+import prismaClient from './prisma';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,7 +42,8 @@ const buildGraphQLApp = (app: Application): Application => {
       expressMiddleware(server, {
         context: async ({ req }) => ({
           logger: logger,
-          graphRequest: graphqlClient
+          graphRequest: graphqlClient,
+          prisma: prismaClient
         }),
       }),
     );

@@ -2,7 +2,7 @@ import { GraphQLClient as GraphqlRequest } from 'graphql-request';
 
 import { EnvKeys } from '../../constants';
 import { env } from '../../util';
-import { Service, User, Deployment } from '../../types'
+import { Service, RailwayUser, Deployment } from '../../types'
 
 import {
   userDetailsQuery,
@@ -29,7 +29,7 @@ class GraphQLClient {
     this.graphqlClient = graphRequest;
   }
 
-  async getUserDetails(): Promise<User> {
+  async getRailwayUserDetails(): Promise<RailwayUser> {
     return this.graphqlClient.request(userDetailsQuery);
   }
 

@@ -1,16 +1,16 @@
 import { GraphQLError } from 'graphql';
-import type { User } from '../../../types';
-import { Context } from '../../../graphql/context';
+import type { RailwayUser } from '../../../types';
+import { Context } from '../../context';
 
 const resolver = async (
   _: unknown,
   _args: unknown,
   context: Context
-): Promise<User> => {
-  let data = {} as User | null;
+): Promise<RailwayUser> => {
+  let data = {} as RailwayUser | null;
 
   try {
-    data = await context.graphRequest.getUserDetails()
+    data = await context.graphRequest.getRailwayUserDetails()
   } catch (e) {
     const err = e as Error;
     context.logger.error(`Error fetching user data from railway graph: ${err.message}`);

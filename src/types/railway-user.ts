@@ -1,6 +1,6 @@
 import { ProjectEdge } from './project'
 
-export type User = {
+export type RailwayUser = {
   me: {
     avatar: string;
     email: string;

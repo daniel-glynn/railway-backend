@@ -1,8 +1,15 @@
-type User {
+type RailwayUser {
   avatar: String!
   email: String!
   name: String!
   projects: Projects
+}
+
+type Owner {
+  username: String
+  firstName: String
+  lastName: String
+  email: String!
 }
 
 type Project {
@@ -108,11 +115,13 @@ scalar JSON
 
 type Query {
   activeDeployment(projectId: String, environmentId: String, serviceId: String): Deployment
-  user: User
+  railwayUser: RailwayUser
 }
 
 type Mutation {
   createService(projectId: String, repo: String): Service
   deleteProject(projectId: String): Boolean
+  login(email: String, password: String): Owner
   restartDeployment(deploymentId: String): Boolean
+  registerOwner(email: String, password: String, railwayApiKey: String): Owner
 }
