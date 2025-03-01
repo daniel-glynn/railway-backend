@@ -6,7 +6,8 @@ import { Service, RailwayUser, Deployment } from '../../types'
 
 import {
   userDetailsQuery,
-  latestActiveDeploymentQuery
+  latestActiveDeploymentQuery,
+  latestDeployments
 } from './helpers/queries';
 import {
   createServiceMutation,
@@ -19,14 +20,13 @@ class GraphQLClient {
 
   constructor() {
     const graphRequest = new GraphqlRequest(
-      env.get(EnvKeys.RAILWAY_PUBLIC_API),
-      {
-        headers: {
-          'Authorization': `Bearer ${env.get(EnvKeys.RAILWAY_API_KEY)}`,
-        },
-      }
+      env.get(EnvKeys.RAILWAY_PUBLIC_API)
     );
     this.graphqlClient = graphRequest;
+  }
+
+  async setHeader(apiKey: string): Promise<void> {
+    this.graphqlClient.setHeader('Authorization', `Bearer ${apiKey}`)
   }
 
   async getRailwayUserDetails(): Promise<RailwayUser> {
@@ -38,12 +38,16 @@ class GraphQLClient {
   }
 
   async createService(projectId: string, repo: string): Promise<Service> {
-    return await this.graphqlClient.request(createServiceMutation, { projectId, repo });
+    return await this.graphqlClient.request(createServiceMutation, { projectId, repo  });
+  }
+
+  async getLatestDeploymentsForProject(projectId: string): Promise<{deployments: Deployment[]}> {
+    return await this.graphqlClient.request(latestDeployments, {
+      projectId
+    });
   }
 
   async getLatestActiveDeploymentForProject(projectId: string, environmentId: string, serviceId: string): Promise<Deployment> {
-    console.log(projectId)
-
     return await this.graphqlClient.request(latestActiveDeploymentQuery, { projectId, environmentId, serviceId });
   }
 

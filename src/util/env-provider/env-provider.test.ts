@@ -15,7 +15,7 @@ describe('EnvService', () => {
 
   it('returns env config value', () => {
     const value = envService.get(EnvKeys.PORT);
-    expect(value).toEqual('notifications');
+    expect(value).toEqual('3000');
   });
 
   it('returns an empty string when env config is not set', () => {

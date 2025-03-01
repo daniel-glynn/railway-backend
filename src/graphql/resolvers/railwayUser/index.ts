@@ -1,14 +1,13 @@
 import { GraphQLError } from 'graphql';
-import type { RailwayUser } from '../../../types';
+import type { RailwayUser, RailwayUserProperties } from '../../../types';
 import { Context } from '../../context';
 
 const resolver = async (
   _: unknown,
   _args: unknown,
   context: Context
-): Promise<RailwayUser> => {
+): Promise<RailwayUserProperties> => {
   let data = {} as RailwayUser | null;
-
   try {
     data = await context.graphRequest.getRailwayUserDetails()
   } catch (e) {
@@ -18,17 +17,13 @@ const resolver = async (
   }
 
   if (data === null) {
-    return data;
+    return null;
   }
-  console.log(data)
   return {
-    me: {
       avatar: data.me.avatar,
       email: data.me.email,
       name: data.me.name,
-      projects: data.me.projects
-    }
-   
+      projects: data.me.projects   
   };
 };
 

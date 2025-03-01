@@ -1,13 +1,18 @@
 import gql from 'graphql-tag';
 
 export const userDetailsQuery = gql`
-  query getUserDetails {
+   query getUserDetails {
     me {
+      email
+      name
+      avatar
       projects {
         edges {
           node {
             id
             name
+            description
+            updatedAt
             services {
               edges {
                 node {
@@ -38,6 +43,31 @@ export const userDetailsQuery = gql`
     }
   }
 `;
+
+export const latestDeployments = gql`
+  query deployment($projectId: String!) {
+    deployments(
+      first: 10
+      input: {
+      projectId: $projectId
+    }
+    ) {
+      edges {
+        node {
+          id
+          staticUrl
+          canRedeploy
+          canRollback
+          deploymentStopped
+          environmentId
+          status
+          projectId
+          url        
+        }
+      }
+    }
+  }
+`
 
 
 export const latestActiveDeploymentQuery = gql`

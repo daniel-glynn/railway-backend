@@ -6,6 +6,7 @@ type RailwayUser {
 }
 
 type Owner {
+  id: String
   username: String
   firstName: String
   lastName: String
@@ -15,11 +16,16 @@ type Owner {
 type Project {
   id: ID!
   name: String!
-  description: String!
-  updatedAt: DateTime!
+  description: String
+  updatedAt: DateTime
   services: Services
   plugins: Plugins
   environments: Environments
+}
+
+type DeploymentData {
+  edges: [DeploymentEdge]
+  pageInfo: PageInfo!
 }
 
 type Deployment {
@@ -32,6 +38,11 @@ type Deployment {
   status: DeploymentStatus
   url: String!
   staticUrl: String!
+}
+
+type DeploymentEdge {
+  cursor: String!
+  node: Deployment
 }
 
 enum DeploymentStatus {
@@ -115,7 +126,8 @@ scalar JSON
 
 type Query {
   activeDeployment(projectId: String, environmentId: String, serviceId: String): Deployment
-  railwayUser: RailwayUser
+  deployments(projectId: String): DeploymentData
+  me: RailwayUser
 }
 
 type Mutation {

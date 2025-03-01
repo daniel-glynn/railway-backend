@@ -34,6 +34,7 @@ const loginResolver = async (
         }
         if (res) {
           resolve({
+            id: data.id,
             email: data.email,
             username: data.username,
             firstName: 'insert firstname logic here',

@@ -21,7 +21,9 @@ const registerOwnerResolver = async (
     data = await context.prisma.registerOwner({
       email: args.email,
       password: hashedPassword,
-      username: faker.internet.username()
+      username: faker.internet.username(),
+      railwayApiKey: args.railwayApiKey
+      
     })
 
   } catch (e) {

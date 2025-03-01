@@ -15,6 +15,14 @@ class PrismaService {
     });
   }
 
+  async findOwnerById(id: number): Promise<Owner | null> {
+    return this.#prisma.owner.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  }
+
   async registerOwner(data: Prisma.OwnerCreateInput): Promise<Owner> {
     return this.#prisma.owner.create({
       data,

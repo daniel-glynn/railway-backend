@@ -40,11 +40,20 @@ const buildGraphQLApp = (app: Application): Application => {
       cors<cors.CorsRequest>(),
       express.json(),
       expressMiddleware(server, {
-        context: async ({ req }) => ({
-          logger: logger,
-          graphRequest: graphqlClient,
-          prisma: prismaClient
-        }),
+        context: async ({ req }) => {
+          /// Get the user id from the headers if logged in
+          if(req.body.operationName !== 'Login' && req.body.operationName !== 'RegisterOwner'){
+            const id = Number(req.headers['x-hacky-id'])
+            const owner = await prismaClient.findOwnerById(id);
+            graphqlClient.setHeader(owner.railwayApiKey)
+          }
+
+          return {  
+            logger: logger,
+            graphRequest: graphqlClient,
+            prisma: prismaClient,
+          };   
+        },
       }),
     );
   };

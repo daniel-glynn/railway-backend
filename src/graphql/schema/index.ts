@@ -1,5 +1,6 @@
 import activeDeploymentResolver from '../resolvers/activeDeployment';
 import railwayUserResolver from '../resolvers/railwayUser';
+import deploymentsResolver from '../resolvers/deployments';
 
 import createServiceResolver from '../resolvers/createService';
 import deleteProjectResolver from '../resolvers/deleteProject';
@@ -11,7 +12,8 @@ import restartDeploymentResolver from '../resolvers/restartDeployment';
 export const resolvers = {
   Query: {
     activeDeployment: activeDeploymentResolver,
-    railwayUser: railwayUserResolver,
+    deployments: deploymentsResolver,
+    me: railwayUserResolver,
   },
   Mutation: {
     createService: createServiceResolver,

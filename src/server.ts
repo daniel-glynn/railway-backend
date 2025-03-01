@@ -26,7 +26,7 @@ const start = async () => {
 
   // Run HTTP server
   await new Promise<void>(resolve => app.listen({ port }, resolve));
-  logger.info(`Pricing API started on port ${port}`); 
+  logger.info(`Railway backend API started on port ${port}`); 
 };
 
 start()

@@ -1,13 +1,14 @@
 import { ProjectEdge } from './project'
 
 export type RailwayUser = {
-  me: {
-    avatar: string;
-    email: string;
-    name: string;
-    projects: {
-      edges: ProjectEdge[]
-    }
-  }
- 
+  me: RailwayUserProperties
 };
+
+export type RailwayUserProperties = {
+  avatar: string;
+  email: string;
+  name: string;
+  projects: {
+    edges: ProjectEdge[]
+  }
+}
