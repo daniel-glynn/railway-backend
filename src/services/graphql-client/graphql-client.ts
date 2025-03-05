@@ -2,18 +2,24 @@ import { GraphQLClient as GraphqlRequest } from 'graphql-request';
 
 import { EnvKeys } from '../../constants';
 import { env } from '../../util';
-import { Service, RailwayUser, Deployment } from '../../types'
+import {  RailwayUser, Deployment, Project } from '../../types'
 
 import {
   userDetailsQuery,
   latestActiveDeploymentQuery,
-  latestDeployments
+  latestDeployments,
+  fetchProjectQuery,
+  recommendedTemplates,
+  fetchServiceQuery
 } from './helpers/queries';
 import {
-  createServiceMutation,
+  createProjectMutation,
   deleteProjectMutation,
-  restartDeploymentMutation
+  deployTemplateMutation,
+  restartDeploymentMutation,
+  serviceDelete
 } from './helpers/mutations';
+import { Service, Template } from 'ui/types/project';
 
 class GraphQLClient {
   private graphqlClient: GraphqlRequest;
@@ -37,8 +43,24 @@ class GraphQLClient {
     return await this.graphqlClient.request(deleteProjectMutation, { id });
   }
 
-  async createService(projectId: string, repo: string): Promise<Service> {
-    return await this.graphqlClient.request(createServiceMutation, { projectId, repo  });
+  async createService(projectId: string, environmentId: string, templateId: string, serializedConfig): Promise<{templateDeployV2: {projectId: string, workflowId: string}}> {
+    return await this.graphqlClient.request(deployTemplateMutation, { input: {projectId, environmentId, templateId, serializedConfig }  });
+  }
+
+  async createProject(description: string, name: string): Promise<{projectCreate: Project}> {
+    return await this.graphqlClient.request(createProjectMutation, { description, name  });
+  }
+
+  async getProject(id: string): Promise<{project: Project}> {
+    return await this.graphqlClient.request(fetchProjectQuery, { id  });
+  }
+
+  async getService(id: string): Promise<{service: Service}> {
+    return await this.graphqlClient.request(fetchServiceQuery, { id  });
+  }
+
+  async getRecommendedTemplates(): Promise<{templates: Template[]}> {
+    return await this.graphqlClient.request(recommendedTemplates);
   }
 
   async getLatestDeploymentsForProject(projectId: string): Promise<{deployments: Deployment[]}> {
@@ -52,10 +74,14 @@ class GraphQLClient {
   }
 
   async restartDeployment(id: string): Promise<void> {
-    const test = await this.graphqlClient.request(restartDeploymentMutation, { id });
+    return await this.graphqlClient.request(restartDeploymentMutation, { id });
+  }
+
+  async serviceDelete(id: string): Promise<void> {
+    const test = await this.graphqlClient.request(serviceDelete, { id });
     console.log(JSON.stringify(test))
     return 
-  }
+  } 
 }
 
 export default GraphQLClient;

@@ -13,7 +13,8 @@
   "scripts": {
     "db:migrate:dev": "npx prisma migrate dev --schema=src/prisma/schema.prisma",
     "generate:prisma": "prisma generate --schema=src/prisma/schema.prisma",
-    "start:src": "tsx src/server.ts"
+    "start:src": "tsx src/server.ts",
+    "start:src:prod": "yarn && yarn generate:prisma && yarn db:migrate:dev && tsx src/server.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.11.3",

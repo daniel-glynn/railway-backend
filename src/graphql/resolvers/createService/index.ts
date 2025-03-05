@@ -3,20 +3,23 @@ import { Context } from '../../context';
 
 const createServiceResolver = async (
   _: unknown,
-  args: { projectId: string, repo: string},
+  args: { projectId: string, environmentId: string, templateServiceId: string, serializedConfig: JSON},
   context: Context
-): Promise<Boolean> => {
+): Promise<{projectId: string, workflowId: string}> => {
   const projectId = args.projectId
-  const repo = args.repo
+  const environmentId = args.environmentId
+  const templateServiceId = args.templateServiceId
+  const serializedConfig = args.serializedConfig
 
+  let data = {} as {projectId: string, workflowId: string}
   try {
-    await context.graphRequest.createService(projectId, repo)
+    data =  await (await context.graphRequest.createService(projectId, environmentId, templateServiceId, serializedConfig)).templateDeployV2
   } catch (e) {
     const err = e as Error;
-    context.logger.error(`Error creating service from railway graph: ${err.message}`);
+    context.logger.error(`Error creating template service from railway graph: ${err.message}`);
     throw new GraphQLError('Server Error');
   };
-  return true
+  return data
 };
 
 export default createServiceResolver;

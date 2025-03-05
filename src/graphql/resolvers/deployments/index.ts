@@ -11,7 +11,6 @@ const deploymentsResolver = async (
 
   try {
     data = await context.graphRequest.getLatestDeploymentsForProject(args.projectId);
-    console.log(JSON.stringify(data))
   } catch (e) {
     const err = e as Error;
     context.logger.error(

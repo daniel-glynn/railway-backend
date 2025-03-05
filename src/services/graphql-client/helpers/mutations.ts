@@ -1,21 +1,34 @@
 import gql from 'graphql-tag';
 
+export const createProjectMutation = gql`
+  mutation projectCreate($description: String!, $name: String!) {
+    projectCreate(
+      input: {
+        description: $description
+        name: $name
+      }
+    ) {
+      id
+      name
+      description
+      updatedAt
+    }
+  }
+`;
+
 export const deleteProjectMutation = gql`
   mutation projectDelete($id: String!) {
     projectDelete(id: $id) 
   }
 `;
 
-export const createServiceMutation = gql`
-  mutation serviceCreate($projectId: String!, $repo: String!) {
-    serviceCreate(
-      input: {
-        projectId: $projectId
-        source: { repo: $repo }
-      }
+export const deployTemplateMutation = gql`
+  mutation templateDeployV2($input: TemplateDeployV2Input!) {
+    templateDeployV2(
+      input: $input
     ) {
-      id
-      name
+      projectId
+      workflowId
     }
   }
 `;
@@ -23,5 +36,11 @@ export const createServiceMutation = gql`
 export const restartDeploymentMutation = gql`
   mutation deploymentRestart($id: String!) {
     deploymentRestart(id: $id)
+  }
+`;
+
+export const serviceDelete = gql`
+  mutation serviceDelete($id: String!) {
+    serviceDelete(id: $id )
   }
 `;

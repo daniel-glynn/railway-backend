@@ -18,8 +18,9 @@ type Project {
   name: String!
   description: String
   updatedAt: DateTime
+  baseEnvironmentId: String
   services: Services
-  plugins: Plugins
+  deployments: DeploymentData
   environments: Environments
 }
 
@@ -36,8 +37,10 @@ type Deployment {
   environmentId: String!
   projectId: String!
   status: DeploymentStatus
-  url: String!
-  staticUrl: String!
+  url: String
+  staticUrl: String
+  updatedAt: DateTime
+  serviceId: String
 }
 
 type DeploymentEdge {
@@ -71,8 +74,8 @@ type Services {
   pageInfo: PageInfo!
 }
 
-type Plugins {
-  edges: [PluginEdge]
+type Variables {
+  edges: [VariableEdge]
   pageInfo: PageInfo!
 }
 
@@ -86,8 +89,8 @@ type ProjectEdge {
   node: Project
 }
 
-type PluginEdge {
-  node: Plugin
+type VariableEdge {
+  node: Variable
 }
 
 type EnvironmentEdge {
@@ -98,19 +101,23 @@ type ServiceEdge {
   node: Service
 }
 
-type Plugin {
+type Variable {
   id: String
   name: String
+  serviceId: String
 }
 
 type Environment {
   id: String
   name: String
+  variables: Variables
 }
 
 type Service {
   id: String
   name: String
+  icon: String
+  updatedAt: DateTime
 }
 
 type PageInfo {
@@ -118,6 +125,30 @@ type PageInfo {
   hasPreviousPage: Boolean!
   startCursor: String
   endCursor: String
+}
+
+type TemplateData {
+  edges: [TemplateEdge]
+  pageInfo: PageInfo!
+}
+
+type Template {
+  id: ID!
+  name: String!
+  description: String!
+  category: String
+  image: String
+  serializedConfig: JSON
+}
+
+type TemplateEdge {
+  cursor: String!
+  node: Template
+}
+
+type TemplateDeploy {
+  workflowId: String!
+  projectId: String!
 }
 
 scalar DateTime
@@ -128,12 +159,17 @@ type Query {
   activeDeployment(projectId: String, environmentId: String, serviceId: String): Deployment
   deployments(projectId: String): DeploymentData
   me: RailwayUser
+  project(projectId: String): Project
+  service(serviceId: String): Service
+  templates: TemplateData
 }
 
 type Mutation {
-  createService(projectId: String, repo: String): Service
+  createProject(name: String, description: String): Project
+  createService(projectId: String, environmentId: String, templateServiceId: String, serializedConfig: JSON): TemplateDeploy
   deleteProject(projectId: String): Boolean
+  deleteService(id: String): Boolean
   login(email: String, password: String): Owner
-  restartDeployment(deploymentId: String): Boolean
+  restartDeployment(id: String): Boolean
   registerOwner(email: String, password: String, railwayApiKey: String): Owner
 }

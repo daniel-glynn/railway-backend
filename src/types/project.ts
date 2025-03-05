@@ -3,8 +3,8 @@ export type Project = {
   name: string;
   updatedAt: Date;
   description: string;
+  baseEnvironmentId: string;
   services: ServiceEdge[]
-  plugins: PluginEdge[]
   environments: EnvironmentEdge[]
 };
 
@@ -32,6 +32,15 @@ export type Plugin = {
 export type Environment = {
   id: string;
   name: string;
+  variables: {
+    edges: {
+     node: {
+        id: string
+        name: string 
+        serviceId: string
+      }
+    }
+  }
 };
 
 export type Service = {
@@ -66,3 +75,12 @@ enum DeploymentStatus {
   SUCCESS='SUCCESS',
   WAITING='WAITING',
 }
+
+export type Template = {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  image: string
+  serializedConfig: JSON
+};

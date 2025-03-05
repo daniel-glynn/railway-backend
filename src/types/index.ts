@@ -1,2 +1,2 @@
 export type { RailwayUser, RailwayUserProperties } from './railway-user'
-export type { Project, ProjectEdge, Environment, EnvironmentEdge, Plugin, PluginEdge, Service, ServiceEdge, Deployment } from './project'
+export type { Project, ProjectEdge, Environment, EnvironmentEdge, Plugin, PluginEdge, Service, ServiceEdge, Deployment, Template } from './project'
